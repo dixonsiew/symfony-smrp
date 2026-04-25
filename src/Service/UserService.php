@@ -26,14 +26,7 @@ class UserService
             return null;
         }
 
-        $user = new User();
-        $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->first_name = $data['first_name'];
-        $user->last_name = $data['last_name'];
-        $user->last_login = $data['last_login'];
-
-        $user->setRoles($this->connection);
+        $user = User::fromRs($data, $this->connection);
         return $user;
     }
 
@@ -47,14 +40,7 @@ class UserService
             return null;
         }
 
-        $user = new User();
-        $user->id = $data['id'];
-        $user->username = $data['username'];
-        $user->first_name = $data['first_name'];
-        $user->last_name = $data['last_name'];
-        $user->last_login = $data['last_login'];
-
-        $user->setRoles($this->connection);
+        $user = User::fromRs($data, $this->connection);
         return $user;
     }
 
@@ -66,13 +52,7 @@ class UserService
         $users = [];
 
         foreach ($data as $row) {
-            $user = new User();
-            $user->id = $row['id'];
-            $user->username = $row['username'];
-            $user->first_name = $row['first_name'];
-            $user->last_name = $row['last_name'];
-            $user->last_login = $row['last_login'];
-            $user->setRoles($this->connection);
+            $user = User::fromRs($data, $this->connection);
             $users[] = $user;
         }
 
@@ -114,12 +94,7 @@ class UserService
         $users = [];
 
         foreach ($data as $row) {
-            $user = new User();
-            $user->id = $row['id'];
-            $user->username = $row['username'];
-            $user->first_name = $row['first_name'];
-            $user->last_name = $row['last_name'];
-            $user->last_login = $row['last_login'];
+            $user = User::fromRs($data, $this->connection);
             $user->setRoles($this->connection);
             $users[] = $user;
         }

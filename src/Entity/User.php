@@ -57,6 +57,18 @@ class User
         $this->roles = $ls;
     }
 
+    public static function fromRs($data, Connection $connection): self
+    {
+        $o = new self();
+        $o->id = $data['id'];
+        $o->username = $data['username'];
+        $o->first_name = $data['first_name'];
+        $o->last_name = $data['last_name'];
+        $o->last_login = $data['last_login'];
+        $o->setRoles($connection);
+        return $o;
+    }
+
     // public function toArray(): array
     // {
     //     return [

@@ -9,6 +9,15 @@
 parameters:
 
 services:
+    App\Validation\ApiValidationFormatter: ~
+
+    Soleinjast\ValidationResponse\EventListener\ValidationExceptionListener:
+        arguments:
+            $formatter: '@App\Validation\ApiValidationFormatter'
+            $statusCode: 400
+        tags:
+            - { name: kernel.event_subscriber }
+            
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

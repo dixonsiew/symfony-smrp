@@ -32,11 +32,11 @@ class TokenAuthenticator extends AbstractAuthenticator
 
         $token = str_replace('Bearer ', '', $authHeader);
         try {
-            $key = '*frxj2hym#7s8wp7k(jlb9b#s6kwy90o)c%#(*gigkrw+*qtz';
+            $key = $_ENV['APP_SECRET'];
             $decoded = JWT::decode($token, new Key($key, 'HS256'));
-            $email = $decoded->email;
+            $username = $decoded->username;
             $roles = ['ROLE_USER'];
-            $badge = new UserBadge($email);
+            $badge = new UserBadge($username);
             return new SelfValidatingPassport($badge);
         } catch (ExpiredException $e) {
             throw new CustomUserMessageAuthenticationException('Token has expired', [], 401);

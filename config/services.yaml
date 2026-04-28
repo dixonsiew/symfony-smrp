@@ -9,6 +9,7 @@
 parameters:
 
 services:
+    app.api_key: '@%env(APP_SECRET)%'
     App\Validation\ApiValidationFormatter: ~
 
     Soleinjast\ValidationResponse\EventListener\ValidationExceptionListener:

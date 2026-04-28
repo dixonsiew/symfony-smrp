@@ -2,6 +2,8 @@
 
 namespace App\Security\User;
 
+use App\Service\UserService;
+
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -9,11 +11,19 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class ApiUserProvider implements UserProviderInterface
 {
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
+        $user = $this->userService->findByUsername($identifier);
         // Create and return User object
         return new ApiUser(
-            'john@gmail.com',
+            $user->username,
             ['ROLE_USER'],
             []
         );

@@ -17,7 +17,7 @@ class CommonSetupService
     public function findById(int $id, string $table): ?CommonSetup
     {
         $sql = "SELECT id, code, \"desc\", ref, created_by, created_date, modified_by, modified_date, deleted, deleted_by, deleted_date 
-            FROM $table where id = :id limit 1";
+            FROM $table WHERE id = :id LIMIT 1";
         $result = $this->connection->executeQuery($sql, ['id' => $id]);
         $data = $result->fetchAssociative();
 
@@ -95,7 +95,7 @@ class CommonSetupService
 
     public function countByKeyword(string $keyword, string $table): int
     {
-        $sql = 'SELECT COUNT(id) FROM $table t WHERE (t.code ILIKE :keyword or t.desc ILIKE :keyword OR t.ref ILIKE :keyword) AND t.deleted is not true';
+        $sql = "SELECT COUNT(id) FROM $table t WHERE (t.code ILIKE :keyword or t.desc ILIKE :keyword OR t.ref ILIKE :keyword) AND t.deleted is not true";
         $result = $this->connection->executeQuery($sql, ['keyword' => $keyword]);
         return (int) $result->fetchOne();
     }

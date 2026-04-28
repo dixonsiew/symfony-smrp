@@ -12,9 +12,9 @@ class AccessTokenHandler implements AccessTokenHandlerInterface
 {
     public function getUserBadgeFrom(string $accessToken): UserBadge
     {
-        $key = '*frxj2hym#7s8wp7k(jlb9b#s6kwy90o)c%#(*gigkrw+*qtz';
+        $key = $_ENV['APP_SECRET'];
         $decoded = JWT::decode($accessToken, new Key($key, 'HS256'));
-        $username = $decoded->email;
+        $username = $decoded->username;
         if (empty($username)) {
             throw new BadCredentialsException('Invalid credentials.', 401);
             // and return a UserBadge object containing the user identifier from the found token

@@ -2,7 +2,7 @@ nelmio_api_doc:
     documentation:
         info:
             title: SMRP Backend API
-            description: SMRP Backend API description
+            description: SMRP Backend API description.
             version: 1.0.0
         components:
             securitySchemes:
@@ -12,6 +12,8 @@ nelmio_api_doc:
                     bearerFormat: JWT
             security:
                 - Bearer: []
+
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+            - ^/o/token

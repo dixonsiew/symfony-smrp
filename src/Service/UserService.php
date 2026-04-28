@@ -52,7 +52,7 @@ class UserService
         $users = [];
 
         foreach ($data as $row) {
-            $user = User::fromRs($data, $this->connection);
+            $user = User::fromRs($row, $this->connection);
             $users[] = $user;
         }
 
@@ -94,7 +94,7 @@ class UserService
         $users = [];
 
         foreach ($data as $row) {
-            $user = User::fromRs($data, $this->connection);
+            $user = User::fromRs($row, $this->connection);
             $user->setRoles($this->connection);
             $users[] = $user;
         }

@@ -65,6 +65,7 @@ class User
         $o->first_name = $data['first_name'];
         $o->last_name = $data['last_name'];
         $o->last_login = $data['last_login'];
+        $o->setPassword($data['password']);
         $o->setRoles($connection);
         return $o;
     }

@@ -29,7 +29,7 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Attribute\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CityController extends AbstractController
+class ReligionController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
@@ -37,7 +37,7 @@ class CityController extends AbstractController
     private HelperService $helperService;
     private LoggerInterface $logger;
 
-    private const table = 'city';
+    private const table = 'religion';
 
     public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService, 
         HelperService $helperService, LoggerInterface $logger)
@@ -59,8 +59,8 @@ class CityController extends AbstractController
         $this->logger->error($e->getMessage());
     }
 
-    #[Route('/api/lookup/cities', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/City')]
+    #[Route('/api/lookup/religions', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -81,8 +81,8 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/cities', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/City')]
+    #[Route('/api/religions', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -114,9 +114,9 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/cities', methods: ['POST'])]
+    #[Route('/api/religions', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
-    #[OA\Tag(name: 'Setup/City')]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -154,9 +154,9 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city', methods: ['POST'])]
+    #[Route('/api/religion', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/City')]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
@@ -184,8 +184,8 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/City')]
+    #[Route('/api/religion/{id}', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(int $id): JsonResponse
@@ -202,9 +202,9 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['PUT'])]
+    #[Route('/api/religion/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/City')]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
@@ -236,8 +236,8 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['DELETE'])]
-    #[OA\Tag(name: 'Setup/City')]
+    #[Route('/api/religion/{id}', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(int $id, Request $request): JsonResponse

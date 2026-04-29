@@ -33,6 +33,16 @@ class AuthController extends AbstractController
         $this->logger = $logger;
     }
 
+    private function handleError(\Exception $e)
+    {
+        if ($e instanceof UnauthorizedHttpException || 
+            $e instanceof NotFoundHttpException) {
+            throw $e;
+        }
+        
+        $this->logger->error($e->getMessage());
+    }
+
     #[Route('/o/token', methods: ['POST'])]
     #[OA\Response(response: 200, description: 'Successful response')]
     #[OA\Tag(name: 'Auth')]
@@ -59,8 +69,7 @@ class AuthController extends AbstractController
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -88,8 +97,7 @@ class AuthController extends AbstractController
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 }

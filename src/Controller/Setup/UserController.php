@@ -43,6 +43,17 @@ class UserController extends AbstractController
         $this->logger = $logger;
     }
 
+    private function handleError(\Exception $e)
+    {
+        if ($e instanceof UnauthorizedHttpException || 
+            $e instanceof NotFoundHttpException || 
+            $e instanceof BadRequestException) {
+            throw $e;
+        }
+        
+        $this->logger->error($e->getMessage());
+    }
+
     #[Route('/api/users', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/User')]
     #[OA\Response(
@@ -72,8 +83,7 @@ class UserController extends AbstractController
             $res->headers->set(Constants::X_TOTAL_PAGE, "{$pg->getTotalPages()}");
             return $res;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -113,8 +123,7 @@ class UserController extends AbstractController
             $res->headers->set(Constants::X_TOTAL_PAGE, "{$pg->getTotalPages()}");
             return $res;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -148,8 +157,7 @@ class UserController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -167,8 +175,7 @@ class UserController extends AbstractController
 
             return $this->json($user);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -209,8 +216,7 @@ class UserController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -226,8 +232,7 @@ class UserController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 }

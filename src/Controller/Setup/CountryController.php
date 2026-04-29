@@ -49,6 +49,16 @@ class CountryController extends AbstractController
         $this->logger = $logger;
     }
 
+    private function handleError(\Exception $e)
+    {
+        if ($e instanceof UnauthorizedHttpException || 
+            $e instanceof NotFoundHttpException) {
+            throw $e;
+        }
+        
+        $this->logger->error($e->getMessage());
+    }
+
     #[Route('/api/lookup/countries', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Country')]
     #[OA\Response(
@@ -67,8 +77,7 @@ class CountryController extends AbstractController
             $lx = $this->commonSetupService->findAll(self::table, 0, 0, '', '');
             return $this->json($lx);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -101,8 +110,7 @@ class CountryController extends AbstractController
             $res->headers->set(Constants::X_TOTAL_PAGE, "{$pg->getTotalPages()}");
             return $res;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -142,8 +150,7 @@ class CountryController extends AbstractController
             $res->headers->set(Constants::X_TOTAL_PAGE, "{$pg->getTotalPages()}");
             return $res;
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -173,8 +180,7 @@ class CountryController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -192,8 +198,7 @@ class CountryController extends AbstractController
 
             return $this->json($o);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -227,8 +232,7 @@ class CountryController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 
@@ -252,8 +256,7 @@ class CountryController extends AbstractController
                 'success' => 1
             ]);
         } catch (\Exception $e) {
-            $this->logger->error($e->getMessage());
-            throw $e;
+            $this->handleError($e);
         }
     }
 }

@@ -22,9 +22,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\Attribute\Model;
+use Nelmio\ApiDocBundle\Attribute\Security;
 
 class UserController extends AbstractController
 {
@@ -51,6 +53,8 @@ class UserController extends AbstractController
             items: new OA\Items(ref: new Model(type: User::class, groups: ['user:read']))
         )
     )]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function list(#[MapQueryParameter] int $_page = 1, #[MapQueryParameter] int $_limit = 20, #[MapQueryParameter] string $sort = ''): JsonResponse
     {
         $sortBy = 'username';
@@ -84,6 +88,8 @@ class UserController extends AbstractController
             items: new OA\Items(ref: new Model(type: User::class, groups: ['user:read']))
         )
     )]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function searchList(
         #[MapRequestPayload] KeywordDto $data,
         #[MapQueryParameter] int $_page = 1,
@@ -115,6 +121,8 @@ class UserController extends AbstractController
     #[Route('/api/user', methods: ['POST'])]
     #[OA\RequestBody(description: 'User data', required: true, content: new OA\JsonContent(ref: '#/components/schemas/UserDto'))]
     #[OA\Tag(name: 'Setup/User')]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(#[MapRequestPayload] UserDto $data): JsonResponse
     {
         try {
@@ -147,6 +155,8 @@ class UserController extends AbstractController
 
     #[Route('/api/user/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/User')]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(int $id): JsonResponse
     {
         try {
@@ -165,6 +175,8 @@ class UserController extends AbstractController
     #[Route('/api/user/{id}', methods: ['PUT'])]
     #[OA\RequestBody(description: 'User data', required: true, content: new OA\JsonContent(ref: '#/components/schemas/UserDto'))]
     #[OA\Tag(name: 'Setup/User')]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function update(int $id, #[MapRequestPayload] UserDto $data): JsonResponse
     {
         try {
@@ -204,6 +216,8 @@ class UserController extends AbstractController
 
     #[Route('/api/user/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/User')]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(int $id): JsonResponse
     {
         try {

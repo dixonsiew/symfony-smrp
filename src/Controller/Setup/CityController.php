@@ -29,7 +29,7 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Attribute\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class CountryController extends AbstractController
+class CityController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
@@ -37,7 +37,7 @@ class CountryController extends AbstractController
     private HelperService $helperService;
     private LoggerInterface $logger;
 
-    private const table = 'country';
+    private const table = 'city';
 
     public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService, 
         HelperService $helperService, LoggerInterface $logger)
@@ -49,8 +49,8 @@ class CountryController extends AbstractController
         $this->logger = $logger;
     }
 
-    #[Route('/api/lookup/countries', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[Route('/api/lookup/cities', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -72,8 +72,8 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/countries', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[Route('/api/cities', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -106,9 +106,9 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/countries', methods: ['POST'])]
+    #[Route('/api/cities', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -147,9 +147,9 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country', methods: ['POST'])]
+    #[Route('/api/city', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
@@ -178,8 +178,8 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[Route('/api/city/{id}', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(int $id): JsonResponse
@@ -197,9 +197,9 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['PUT'])]
+    #[Route('/api/city/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
@@ -232,8 +232,8 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['DELETE'])]
-    #[OA\Tag(name: 'Setup/Country')]
+    #[Route('/api/city/{id}', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(int $id, Request $request): JsonResponse

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controller\Report\MasterPD105;
+namespace App\Controller\Report\MasterPD101;
+
+use App\Controller\Report\ColumnMap;
 
 const COLUMN_MAP = [
     new ColumnMap("ACCOUNT_NO", "ACCOUNT NO"),
@@ -40,19 +42,18 @@ const COLUMN_MAP = [
     new ColumnMap("NOK_ID_TYPE", "NOK DOC TYPE"),
 
     new ColumnMap("NOK_ID", "NOK DOC NO"),
-    new ColumnMap("STREET1", "STREET1"),
-    new ColumnMap("STREET2", "STREET2"),
-    new ColumnMap("CITYCODE", "STREET3"),
-    new ColumnMap("POSTCODE", "POSTCODE"),
+    new ColumnMap("NOK_STREET1", "STREET1"),
+    new ColumnMap("NOK_STREET2", "STREET2"),
+    new ColumnMap("NOK_CITYCODE", "STREET3"),
+    new ColumnMap("NOK_POSTCODE", "POSTCODE"),
 
-    new ColumnMap("OCITY", "STATE"),
+    new ColumnMap("NOK_OCITY", "STATE"),
     new ColumnMap("COUNTRY", "COUNTRY"),
     new ColumnMap("NOK_MOBILE_PHONE", "NOK MOBILE NO"),
     new ColumnMap("ADMISSION_DATE", "ADMISSION DATE"),
     new ColumnMap("ADMISSION_TIME", "ADMISSION TIME"),
 
     new ColumnMap("WARD_NO", "WARD NO"),
-    new ColumnMap("PRIMARY_SPECIALTY", "PRIMARY SPECIALITY"),
+    new ColumnMap("PRIMARY_SPECIALITY", "PRIMARY SPECIALITY"),
     new ColumnMap("PAYMENT_CLASS_CODE", "PAYMENT CLASS"),
-    new ColumnMap("DEATH_DATE", "DEATH DATE"),
 ];

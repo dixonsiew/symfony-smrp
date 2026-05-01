@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Controller\Report\MasterPD102;
+namespace App\Controller\Report\MasterPD105;
+
+use App\Controller\Report\ColumnMap;
 
 const COLUMN_MAP = [
     new ColumnMap("ACCOUNT_NO", "ACCOUNT NO"),
@@ -17,10 +19,12 @@ const COLUMN_MAP = [
 
     new ColumnMap("NATIONALITY", "NATIONALITY"),
     new ColumnMap("ETHNIC_GROUP", "ETHNIC GROUP"),
-    new ColumnMap("PERSON_HEIGHT", "HEIGHT"),
-    new ColumnMap("PERSON_WEIGHT", "WEIGHT"),
+    new ColumnMap("OCCUPATION", "OCCUPATION"),
+    new ColumnMap("HEIGHT", "HEIGHT"),
+    new ColumnMap("WEIGHT", "WEIGHT"),
 
     new ColumnMap("COUNTRY_OF_BIRTH", "COUNTRY OF BIRTH"),
+    new ColumnMap("REFPERSONCATEGORYCODE", "PATIENT CATEGORY"),
     new ColumnMap("DOCUMENT_TYPE", "DOC TYPE"),
     new ColumnMap("DOCUMENT_NUMBER", "DOC NO"),
     new ColumnMap("STREET1", "STREET1"),
@@ -50,19 +54,7 @@ const COLUMN_MAP = [
     new ColumnMap("ADMISSION_TIME", "ADMISSION TIME"),
 
     new ColumnMap("WARD_NO", "WARD NO"),
+    new ColumnMap("PRIMARY_SPECIALTY", "PRIMARY SPECIALITY"),
     new ColumnMap("PAYMENT_CLASS_CODE", "PAYMENT CLASS"),
-
-    new ColumnMap("GRAVIDA", "GRAVIDA"),
-    new ColumnMap("PARITY", "PARITY"),
-    new ColumnMap("GESTATION_PERIOD", "GESTATION PERIOD"),
-    new ColumnMap("ISMOTHERALIVE", "IS MOTHER ALIVE"),
-    new ColumnMap("REFANTENATALCARECODE", "ANTENATAL CARE"),
-    new ColumnMap("LABOUR_METHOD", "LABOUR METHOD"),
-
-    new ColumnMap("DELIVERY_DATE", "DELIVERY DATE"),
-    new ColumnMap("RESULT_OF_BIRTH", "RESULT OF BIRTH"),
-    new ColumnMap("DELIVERY_TYPE", "DELIVERY TYPE"),
-    new ColumnMap("CHILD_SEX", "CHILD SEX"),
-    new ColumnMap("WEIGHT", "WEIGHT"),
-    new ColumnMap("LENGTH", "LENGTH"),
+    new ColumnMap("DEATH_DATE", "DEATH DATE"),
 ];

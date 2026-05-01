@@ -23,9 +23,11 @@ class ApiUserProvider implements UserProviderInterface
         $user = $this->userService->findByUsername($identifier);
         // Create and return User object
         return new ApiUser(
+            $user->id,
             $user->username,
             ['ROLE_USER'],
-            []
+            [],
+            $user
         );
     }
 

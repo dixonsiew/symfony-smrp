@@ -2,32 +2,30 @@
 
 namespace App\Controller\Setup;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use function strlen;
-
 use App\Constants\Constants;
-use App\Dto\KeywordDto;
 use App\Dto\CommonSetupDto;
-use App\Model\Pager;
+use App\Dto\KeywordDto;
 use App\Entity\CommonSetup;
+use App\Model\Pager;
 use App\Service\CommonSetupService;
 use App\Service\HelperService;
-use App\Service\UserService;
 use App\Service\TokenService;
-
+use App\Service\UserService;
+use Nelmio\ApiDocBundle\Attribute\Model;
+use Nelmio\ApiDocBundle\Attribute\Security;
+use OpenApi\Attributes as OA;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use OpenApi\Attributes as OA;
-use Nelmio\ApiDocBundle\Attribute\Model;
-use Nelmio\ApiDocBundle\Attribute\Security;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use function strlen;
 
 class CityController extends AbstractController
 {
@@ -39,7 +37,7 @@ class CityController extends AbstractController
 
     private const table = 'city';
 
-    public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService, 
+    public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService,
         HelperService $helperService, LoggerInterface $logger)
     {
         $this->commonSetupService = $commonSetupService;
@@ -51,11 +49,11 @@ class CityController extends AbstractController
 
     private function handleError(\Exception $e)
     {
-        if ($e instanceof UnauthorizedHttpException || 
-            $e instanceof NotFoundHttpException) {
+        if ($e instanceof UnauthorizedHttpException ||
+                $e instanceof NotFoundHttpException) {
             throw $e;
         }
-        
+
         $this->logger->error($e->getMessage());
     }
 
@@ -162,9 +160,7 @@ class CityController extends AbstractController
     public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
@@ -173,9 +169,9 @@ class CityController extends AbstractController
             $o->code = $data->code;
             $o->desc = $data->desc;
             $o->ref = $data->ref;
-            $o->created_by = $user->id;
+            $o->created_by = $user->getUserId();
             $this->commonSetupService->save($o, self::table);
-            
+
             return $this->json([
                 'success' => 1
             ]);
@@ -210,9 +206,7 @@ class CityController extends AbstractController
     public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
@@ -225,7 +219,7 @@ class CityController extends AbstractController
             $o->code = $data->code;
             $o->desc = $data->desc;
             $o->ref = $data->ref;
-            $o->modified_by = $user->id;
+            $o->modified_by = $user->getUserId();
             $this->commonSetupService->update($o, self::table);
 
             return $this->json([
@@ -243,15 +237,13 @@ class CityController extends AbstractController
     public function delete(int $id, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
-            
-            $this->commonSetupService->deleteById($id, $user->id, self::table);
-            
+
+            $this->commonSetupService->deleteById($id, $user->getUserId(), self::table);
+
             return $this->json([
                 'success' => 1
             ]);

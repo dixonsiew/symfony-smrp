@@ -2,6 +2,8 @@
 
 namespace App\Controller\Report\MasterPD301;
 
+use App\Controller\Report\ColumnMap;
+
 const COLUMN_MAP = [
     new ColumnMap("ACCOUNT_NO", "ACCOUNT NO"),
     new ColumnMap("PRN", "PRN"),

@@ -162,9 +162,7 @@ class AdminStatusController extends AbstractController
     public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
@@ -173,7 +171,7 @@ class AdminStatusController extends AbstractController
             $o->code = $data->code;
             $o->desc = $data->desc;
             $o->ref = $data->ref;
-            $o->created_by = $user->id;
+            $o->created_by = $user->getUserId();
             $this->commonSetupService->save($o, self::table);
             
             return $this->json([
@@ -210,9 +208,7 @@ class AdminStatusController extends AbstractController
     public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
@@ -225,7 +221,7 @@ class AdminStatusController extends AbstractController
             $o->code = $data->code;
             $o->desc = $data->desc;
             $o->ref = $data->ref;
-            $o->modified_by = $user->id;
+            $o->modified_by = $user->getUserId();
             $this->commonSetupService->update($o, self::table);
 
             return $this->json([
@@ -243,14 +239,12 @@ class AdminStatusController extends AbstractController
     public function delete(int $id, Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
             
-            $this->commonSetupService->deleteById($id, $user->id, self::table);
+            $this->commonSetupService->deleteById($id, $user->getUserId(), self::table);
             
             return $this->json([
                 'success' => 1

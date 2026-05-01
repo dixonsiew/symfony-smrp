@@ -81,19 +81,18 @@ class AuthController extends AbstractController
     public function userDetails(Request $request): JsonResponse
     {
         try {
-            $lx = $this->tokenService->decodeToken($request);
-            $username = $lx[0];
-            $user = $this->userService->findByUsername($username);
+            $user = $this->getUser();
             if ($user === null) {
                 throw new NotFoundHttpException('User not found', code: 404);
             }
 
+            $o = $user->getUser();
             return $this->json([
-                'id' => $user->id,
-                'username'=> $user->username,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'roles' => $user->roles
+                'id' => $o->id,
+                'username'=> $o->username,
+                'first_name' => $o->first_name,
+                'last_name' => $o->last_name,
+                'roles' => $o->roles
             ]);
 
         } catch (\Exception $e) {

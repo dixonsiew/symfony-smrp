@@ -3,7 +3,6 @@
 namespace App\Controller\Setup;
 
 use Psr\Log\LoggerInterface;
-use function strlen;
 
 use App\Constants\Constants;
 use App\Dto\KeywordDto;
@@ -24,9 +23,12 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Attribute\Security;
+
+use OpenApi\Attributes as OA;
+
+use function strlen;
 
 class UserController extends AbstractController
 {

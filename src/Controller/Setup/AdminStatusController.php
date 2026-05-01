@@ -3,43 +3,43 @@
 namespace App\Controller\Setup;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use function strlen;
 
 use App\Constants\Constants;
-use App\Dto\KeywordDto;
 use App\Dto\CommonSetupDto;
-use App\Model\Pager;
+use App\Dto\KeywordDto;
 use App\Entity\CommonSetup;
+use App\Model\Pager;
 use App\Service\CommonSetupService;
 use App\Service\HelperService;
 use App\Service\UserService;
-use App\Service\TokenService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-use OpenApi\Attributes as OA;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use Nelmio\ApiDocBundle\Attribute\Security;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use OpenApi\Attributes as OA;
+
+use function strlen;
 
 class AdminStatusController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
-    private TokenService $tokenService;
     private HelperService $helperService;
     private LoggerInterface $logger;
 
     private const table = 'adm_status';
 
-    public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService, 
+    public function __construct(CommonSetupService $commonSetupService, UserService $userService, 
         HelperService $helperService, LoggerInterface $logger)
     {
         $this->commonSetupService = $commonSetupService;
@@ -159,7 +159,7 @@ class AdminStatusController extends AbstractController
     #[OA\Tag(name: 'Setup/AdmStatus')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
+    public function create(#[MapRequestPayload] CommonSetupDto $data): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -205,7 +205,7 @@ class AdminStatusController extends AbstractController
     #[OA\Tag(name: 'Setup/AdmStatus')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
+    public function update(int $id, #[MapRequestPayload] CommonSetupDto $data): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -236,7 +236,7 @@ class AdminStatusController extends AbstractController
     #[OA\Tag(name: 'Setup/AdmStatus')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function delete(int $id, Request $request): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         try {
             $user = $this->getUser();

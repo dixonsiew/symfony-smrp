@@ -30,14 +30,14 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
-class ReligionController extends AbstractController
+class SpecialityController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
     private HelperService $helperService;
     private LoggerInterface $logger;
 
-    private const table = 'religion';
+    private const table = 'speciality';
 
     public function __construct(CommonSetupService $commonSetupService, UserService $userService,
         HelperService $helperService, LoggerInterface $logger)
@@ -50,16 +50,16 @@ class ReligionController extends AbstractController
 
     private function handleError(\Exception $e)
     {
-        if ($e instanceof UnauthorizedHttpException || 
-            $e instanceof NotFoundHttpException) {
+        if ($e instanceof UnauthorizedHttpException ||
+                $e instanceof NotFoundHttpException) {
             throw $e;
         }
-        
+
         $this->logger->error($e->getMessage());
     }
 
-    #[Route('/api/lookup/religions', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[Route('/api/lookup/specialities', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -80,8 +80,8 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religions', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[Route('/api/specialities', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -113,9 +113,9 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religions', methods: ['POST'])]
+    #[Route('/api/specialities', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
@@ -153,9 +153,9 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion', methods: ['POST'])]
+    #[Route('/api/speciality', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function create(#[MapRequestPayload] CommonSetupDto $data): JsonResponse
@@ -172,7 +172,7 @@ class ReligionController extends AbstractController
             $o->ref = $data->ref;
             $o->created_by = $user->getUserId();
             $this->commonSetupService->save($o, self::table);
-            
+
             return $this->json([
                 'success' => 1
             ]);
@@ -181,8 +181,8 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['GET'])]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[Route('/api/speciality/{id}', methods: ['GET'])]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(int $id): JsonResponse
@@ -199,9 +199,9 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['PUT'])]
+    #[Route('/api/speciality/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function update(int $id, #[MapRequestPayload] CommonSetupDto $data): JsonResponse
@@ -231,8 +231,8 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['DELETE'])]
-    #[OA\Tag(name: 'Setup/Religion')]
+    #[Route('/api/speciality/{id}', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function delete(int $id): JsonResponse
@@ -242,9 +242,9 @@ class ReligionController extends AbstractController
             if ($user === null) {
                 throw new UnauthorizedHttpException('User not found', code: 401);
             }
-            
+
             $this->commonSetupService->deleteById($id, $user->getUserId(), self::table);
-            
+
             return $this->json([
                 'success' => 1
             ]);

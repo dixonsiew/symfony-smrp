@@ -2,6 +2,8 @@
 
 namespace App\Controller\Setup;
 
+use Psr\Log\LoggerInterface;
+
 use App\Constants\Constants;
 use App\Dto\CommonSetupDto;
 use App\Dto\KeywordDto;
@@ -9,12 +11,8 @@ use App\Entity\CommonSetup;
 use App\Model\Pager;
 use App\Service\CommonSetupService;
 use App\Service\HelperService;
-use App\Service\TokenService;
 use App\Service\UserService;
-use Nelmio\ApiDocBundle\Attribute\Model;
-use Nelmio\ApiDocBundle\Attribute\Security;
-use OpenApi\Attributes as OA;
-use Psr\Log\LoggerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,24 +23,27 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use Nelmio\ApiDocBundle\Attribute\Security;
+
+use OpenApi\Attributes as OA;
+
 use function strlen;
 
 class CityController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
-    private TokenService $tokenService;
     private HelperService $helperService;
     private LoggerInterface $logger;
 
     private const table = 'city';
 
-    public function __construct(CommonSetupService $commonSetupService, UserService $userService, TokenService $tokenService,
+    public function __construct(CommonSetupService $commonSetupService, UserService $userService,
         HelperService $helperService, LoggerInterface $logger)
     {
         $this->commonSetupService = $commonSetupService;
         $this->userService = $userService;
-        $this->tokenService = $tokenService;
         $this->helperService = $helperService;
         $this->logger = $logger;
     }
@@ -157,7 +158,7 @@ class CityController extends AbstractController
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function create(#[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
+    public function create(#[MapRequestPayload] CommonSetupDto $data): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -203,7 +204,7 @@ class CityController extends AbstractController
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function update(int $id, #[MapRequestPayload] CommonSetupDto $data, Request $request): JsonResponse
+    public function update(int $id, #[MapRequestPayload] CommonSetupDto $data): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -234,7 +235,7 @@ class CityController extends AbstractController
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function delete(int $id, Request $request): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         try {
             $user = $this->getUser();

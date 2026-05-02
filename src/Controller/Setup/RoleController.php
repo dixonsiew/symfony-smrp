@@ -42,11 +42,12 @@ class RoleController extends AbstractController
     private function handleError(\Exception $e)
     {
         if ($e instanceof UnauthorizedHttpException ||
-                $e instanceof NotFoundHttpException) {
+            $e instanceof NotFoundHttpException) {
             throw $e;
         }
 
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/lookup/groups', methods: ['GET'])]

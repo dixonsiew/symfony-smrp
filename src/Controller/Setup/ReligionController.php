@@ -56,6 +56,7 @@ class ReligionController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/lookup/religions', methods: ['GET'])]

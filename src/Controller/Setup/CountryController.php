@@ -56,6 +56,7 @@ class CountryController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/lookup/countries', methods: ['GET'])]

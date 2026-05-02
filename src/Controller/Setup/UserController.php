@@ -54,6 +54,7 @@ class UserController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/users', methods: ['GET'])]

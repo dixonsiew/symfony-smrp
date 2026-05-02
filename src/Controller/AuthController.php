@@ -41,6 +41,7 @@ class AuthController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/o/token', methods: ['POST'])]

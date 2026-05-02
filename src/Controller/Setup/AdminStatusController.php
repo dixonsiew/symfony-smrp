@@ -57,6 +57,7 @@ class AdminStatusController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/lookup/adm-statuses', methods: ['GET'])]

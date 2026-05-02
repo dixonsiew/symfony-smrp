@@ -56,6 +56,7 @@ class StateController extends AbstractController
         }
         
         $this->logger->error($e->getMessage());
+        throw $e;
     }
 
     #[Route('/api/lookup/states', methods: ['GET'])]

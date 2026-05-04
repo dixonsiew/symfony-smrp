@@ -9,3 +9,5 @@
 
 controllers:
     resource: routing.controllers
+    prefix: /smrp
+

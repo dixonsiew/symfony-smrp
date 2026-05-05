@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 
 use App\Model\Pager;
 use App\Service\MongoDbService;
+use App\Service\HelperService;
 use App\Controller\Report\MasterPD101\COLUMN_MAP;
 
 use MongoDB\Client;
@@ -27,10 +28,14 @@ use OpenApi\Attributes as OA;
 class MasterPD101Controller extends AbstractController
 {
     private MongoDbService $mongoDbService;
+    private HelperService $helperService;
+    private LoggerInterface $logger;
     
-    public function __construct(MongoDbService $mongoDbService)
+    public function __construct(MongoDbService $mongoDbService, HelperService $helperService, LoggerInterface $logger)
     {
         $this->mongoDbService = $mongoDbService;
+        $this->helperService = $helperService;
+        $this->logger = $logger;
     }
     
     #[Route('/api/master-pd101/rpt1', methods: ['GET'])]
@@ -78,6 +83,7 @@ class MasterPD101Controller extends AbstractController
             'limit' => $pg->pageSize,
         ];
         $ls = $col->find($filter, $options)->toArray();
+        $ls = $this->helperService->processDoc($ls);
         return $this->json([
             'columnmaps' => COLUMN_MAP,
             'total_count' => $total,

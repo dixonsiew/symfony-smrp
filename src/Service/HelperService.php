@@ -50,6 +50,17 @@ class HelperService
         }
     }
 
+    public function getStr($a): string
+    {
+        return (string)$a;
+    }
+
+    public function getNum(string $s): float
+    {
+        $r = preg_replace('/[^\d.]/', '', $s);
+        return (float)$r;
+    }
+
     public function processDoc(array $lx): array
     {
         $ls = [];

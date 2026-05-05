@@ -44,7 +44,6 @@ class AdminStatusController extends AbstractController
     {
         $this->commonSetupService = $commonSetupService;
         $this->userService = $userService;
-        $this->tokenService = $tokenService;
         $this->helperService = $helperService;
         $this->logger = $logger;
     }

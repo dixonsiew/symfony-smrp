@@ -15,9 +15,14 @@ use MongoDB\Collection;
 use MongoDB\Database;
 use MongoDB\BSON\ObjectId;
 
+use OpenSpout\Writer\XLSX\Writer;
+use OpenSpout\Common\Entity\Row;;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -82,7 +87,7 @@ class MasterPD101Controller extends AbstractController
     )]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function jsonRH101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
+    public function jsonRH101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): StreamedJsonResponse
     {
         try {
             $user = $this->getUser();
@@ -166,24 +171,24 @@ class MasterPD101Controller extends AbstractController
             $facilityCode = $_ENV['FACILITY_CODE'];
             $filename = "{$facilityCode}_{$ds1}_{$ds2}_RH101.json";
 
-            $res = $this->json([
-                'filename' => $filename,
-                'admissionFrom' => $datefrom,
-                'admissionTo' => $dateto,
-                'refServiceTypeCode' => '02',
-                'facilityCode' => $facilityCode,
-                'forms' => $forms,
-            ]);
-
-            $res->headers->set('Content-Type', 'application/json');
-            $res->headers->set('Content-Disposition', "attachment; filename=$filename");
-            $res->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            $res->headers->set('Pragma', 'no-cache');
-            $res->headers->set('Expires', '0');
-            $res->headers->set('filename', $filename);
-
-            $res->setEncodingOptions($res->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
+            $res = new StreamedJsonResponse(
+                [
+                    'filename' => $filename,
+                    'admissionFrom' => $datefrom,
+                    'admissionTo' => $dateto,
+                    'refServiceTypeCode' => '02',
+                    'facilityCode' => $facilityCode,
+                    'forms' => $forms,
+                ], 200, 
+                [
+                    'Content-Type' => 'application/json',
+                    'Content-Disposition' => "attachment; filename=$filename",
+                    'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                    'Pragma' => 'no-cache',
+                    'Expires' => '0',
+                    'filename' => $filename,
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
             return $res;
         } catch (\Exception $e) {
             $this->handleError($e);
@@ -198,7 +203,7 @@ class MasterPD101Controller extends AbstractController
     )]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function jsonPD101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
+    public function jsonPD101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): StreamedJsonResponse
     {
         try {
             $user = $this->getUser();
@@ -289,28 +294,70 @@ class MasterPD101Controller extends AbstractController
             $facilityCode = $_ENV['FACILITY_CODE'];
             $filename = "{$facilityCode}_{$ds1}_{$ds2}_PD101.json";
 
-            $res = $this->json([
-                'filename' => $filename,
-                'admissionFrom' => $datefrom,
-                'admissionTo' => $dateto,
-                'refServiceTypeCode' => '01',
-                'facilityCode' => $facilityCode,
-                'forms' => $forms,
-            ]);
-
-            $res->headers->set('Content-Type', 'application/json');
-            $res->headers->set('Content-Disposition', "attachment; filename=$filename");
-            $res->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            $res->headers->set('Pragma', 'no-cache');
-            $res->headers->set('Expires', '0');
-            $res->headers->set('filename', $filename);
-
-            $res->setEncodingOptions($res->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
+            $res = new StreamedJsonResponse(
+                [
+                    'filename' => $filename,
+                    'admissionFrom' => $datefrom,
+                    'admissionTo' => $dateto,
+                    'refServiceTypeCode' => '01',
+                    'facilityCode' => $facilityCode,
+                    'forms' => $forms,
+                ], 200, 
+                [
+                    'Content-Type' => 'application/json',
+                    'Content-Disposition' => "attachment; filename=$filename",
+                    'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                    'Pragma' => 'no-cache',
+                    'Expires' => '0',
+                    'filename' => $filename,
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
             return $res;
         } catch (\Exception $e) {
             $this->handleError($e);
         }
+    }
+
+    #[Route('/export/rpt1/xlsx', methods: ['GET'])]
+    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful response'
+    )]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function xlsx(
+        #[MapQueryParameter] string $vt = '0',
+        #[MapQueryParameter] string $datefrom = '',
+        #[MapQueryParameter] string $dateto = ''
+    ): StreamedResponse
+    {
+        $dt1 = explode('-', $datefrom);
+        $dt2 = explode('-', $dateto);
+        $ds1 = "{$dt1[2]}{$dt1[1]}{$dt1[0]}";
+        $ds2 = "{$dt2[2]}{$dt2[1]}{$dt2[0]}";
+
+        $x = $vt === '0' ? 'PD101' : 'RH101';
+        $facilityCode = $_ENV['FACILITY_CODE'];
+        $filename = "{$facilityCode}_{$ds1}_{$ds2}_{$x}.xlsx";
+
+        return new StreamedResponse(function () {
+            $wr = new Writer();
+            $wr->openToBrowser('php://output');
+
+            $hd = [];
+            for ($i = 0; $i < count(COLUMN_MAP); $i++) {
+                $t = COLUMN_MAP[$i];
+                $hd[] = $t->text;
+            }
+
+            $wr->addRow(Row::fromValues($hd));
+            $wr->close();
+            
+        }, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => "attachment; filename={$filename}",
+        ]);
     }
     
     #[Route('/rpt1', methods: ['GET'])]

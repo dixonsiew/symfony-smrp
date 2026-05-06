@@ -14,6 +14,7 @@
         "mongodb/mongodb": "^2.3",
         "nelmio/api-doc-bundle": "^5.10",
         "nelmio/cors-bundle": "^2.6",
+        "openspout/openspout": "^5.7",
         "soleinjast/symfony-validation-response": "*",
         "symfony/asset": "8.0.*",
         "symfony/console": "8.0.*",

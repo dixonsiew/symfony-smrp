@@ -30,6 +30,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class UserController extends AbstractController
 {
     private RoleService $roleService;
@@ -57,7 +58,7 @@ class UserController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/users', methods: ['GET'])]
+    #[Route('/users', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/User')]
     #[OA\Response(
         response: 200,
@@ -90,7 +91,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/api/users', methods: ['POST'])]
+    #[Route('/users', methods: ['POST'])]
     #[OA\RequestBody(description: 'Keyword', required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/User')]
     #[OA\Response(
@@ -130,7 +131,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/api/user', methods: ['POST'])]
+    #[Route('/user', methods: ['POST'])]
     #[OA\RequestBody(description: 'User data', required: true, content: new OA\JsonContent(ref: '#/components/schemas/UserDto'))]
     #[OA\Tag(name: 'Setup/User')]
     #[Security(name: 'Bearer')]
@@ -164,7 +165,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/api/user/{id}', methods: ['GET'])]
+    #[Route('/user/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/User')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -182,7 +183,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/api/user/{id}', methods: ['PUT'])]
+    #[Route('/user/{id}', methods: ['PUT'])]
     #[OA\RequestBody(description: 'User data', required: true, content: new OA\JsonContent(ref: '#/components/schemas/UserDto'))]
     #[OA\Tag(name: 'Setup/User')]
     #[Security(name: 'Bearer')]
@@ -223,7 +224,7 @@ class UserController extends AbstractController
         }
     }
 
-    #[Route('/api/user/{id}', methods: ['DELETE'])]
+    #[Route('/user/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/User')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

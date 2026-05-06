@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class DischargeOfficerController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class DischargeOfficerController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/discharge-officers', methods: ['GET'])]
+    #[Route('/lookup/discharge-officers', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officers', methods: ['GET'])]
+    #[Route('/discharge-officers', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officers', methods: ['POST'])]
+    #[Route('/discharge-officers', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officer', methods: ['POST'])]
+    #[Route('/discharge-officer', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officer/{id}', methods: ['GET'])]
+    #[Route('/discharge-officer/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officer/{id}', methods: ['PUT'])]
+    #[Route('/discharge-officer/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class DischargeOfficerController extends AbstractController
         }
     }
 
-    #[Route('/api/discharge-officer/{id}', methods: ['DELETE'])]
+    #[Route('/discharge-officer/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/DischargeOfficer')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

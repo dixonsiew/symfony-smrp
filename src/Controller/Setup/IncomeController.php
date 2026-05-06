@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class IncomeController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class IncomeController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/incomes', methods: ['GET'])]
+    #[Route('/lookup/incomes', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Income')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/incomes', methods: ['GET'])]
+    #[Route('/incomes', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Income')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/incomes', methods: ['POST'])]
+    #[Route('/incomes', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Income')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/income', methods: ['POST'])]
+    #[Route('/income', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Income')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/income/{id}', methods: ['GET'])]
+    #[Route('/income/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Income')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/income/{id}', methods: ['PUT'])]
+    #[Route('/income/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Income')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class IncomeController extends AbstractController
         }
     }
 
-    #[Route('/api/income/{id}', methods: ['DELETE'])]
+    #[Route('/income/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Income')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

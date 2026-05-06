@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,11 +29,11 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class DeliveryTypeController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
     private UserService $userService;
-    private TokenService $tokenService;
     private HelperService $helperService;
     private LoggerInterface $logger;
 
@@ -60,7 +59,7 @@ class DeliveryTypeController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/delivery-types', methods: ['GET'])]
+    #[Route('/lookup/delivery-types', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[OA\Response(
         response: 200,
@@ -82,7 +81,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-types', methods: ['GET'])]
+    #[Route('/delivery-types', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[OA\Response(
         response: 200,
@@ -115,7 +114,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-types', methods: ['POST'])]
+    #[Route('/delivery-types', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[OA\Response(
@@ -155,7 +154,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-type', methods: ['POST'])]
+    #[Route('/delivery-type', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[Security(name: 'Bearer')]
@@ -183,7 +182,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-type/{id}', methods: ['GET'])]
+    #[Route('/delivery-type/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -201,7 +200,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-type/{id}', methods: ['PUT'])]
+    #[Route('/delivery-type/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[Security(name: 'Bearer')]
@@ -233,7 +232,7 @@ class DeliveryTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/delivery-type/{id}', methods: ['DELETE'])]
+    #[Route('/delivery-type/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/DeliveryType')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

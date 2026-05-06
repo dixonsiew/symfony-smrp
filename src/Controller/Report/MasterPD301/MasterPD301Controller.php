@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Report\MasterPD101;
+namespace App\Controller\Report\MasterPD301;
 
 use Psr\Log\LoggerInterface;
 
@@ -8,7 +8,7 @@ use App\Model\Pager;
 use App\Service\MongoDbService;
 use App\Service\ReportService;
 use App\Service\HelperService;
-use App\Controller\Report\MasterPD101\COLUMN_MAP;
+use App\Controller\Report\MasterPD301\COLUMN_MAP;
 
 use MongoDB\Client;
 use MongoDB\Collection;
@@ -30,8 +30,8 @@ use Nelmio\ApiDocBundle\Attribute\Security;
 
 use OpenApi\Attributes as OA;
 
-#[Route('/api/master-pd101')]
-class MasterPD101Controller extends AbstractController
+#[Route('/api/master-pd301')]
+class MasterPD301Controller extends AbstractController
 {
     private MongoDbService $mongoDbService;
     private ReportService $reportService;
@@ -69,20 +69,20 @@ class MasterPD101Controller extends AbstractController
     {
         $prefix = $_ENV['MONGODB_PREFIX'];
         $suffix = $prefix === 'prod' ? '_prod' : '';
-        $s = $vt === '0' ? "master_pd101{$suffix}" : "master_rh101{$suffix}";
+        $s = $vt === '0' ? "master_pd301{$suffix}" : "master_rh301{$suffix}";
         $db = $cli->getDatabase($s);
         return $db;
     }
 
     #[Route('/export/rpt2', methods: ['GET'])]
-    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Tag(name: 'Report/MasterPD301')]
     #[OA\Response(
         response: 200,
         description: 'Successful response'
     )]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function jsonRH101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
+    public function jsonRH301(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -156,6 +156,13 @@ class MasterPD101Controller extends AbstractController
                     'refRelationshipCode' => $this->reportService->refRelationshipCode($d),
                     'totalDurationDay' => '0',
                     'admissionDate' => sprintf('%s %s:00', $d['ADMISSION_DATE'], $d['ADMISSION_TIME']),
+                    'refDischargeTypeCode' => $this->reportService->refDischargeTypeCode($d),
+                    'dischargeDateTime' => sprintf('%s %s:00', $d['DISCHARGE_DATE'], $d['DISCHARGE_TIME']),
+                    'refDischargeOfficerTypeCode' => '02',
+                    'mmc' => '00',
+                    'refDiagnosisItemTypeCode' => $this->reportService->refDiagnosisItemTypeCode($d),
+                    'description' => (string)$d['ICD10_DESCRIPTION'],
+                    'refIcd10Main' => (string)$d['ICD10_CODE'],
                     'person' => $person,
                     'nextOfKins' => $nok,
                 ];
@@ -164,7 +171,7 @@ class MasterPD101Controller extends AbstractController
             }
 
             $facilityCode = $_ENV['FACILITY_CODE'];
-            $filename = "{$facilityCode}_{$ds1}_{$ds2}_RH101.json";
+            $filename = "{$facilityCode}_{$ds1}_{$ds2}_RH301.json";
 
             $res = $this->json([
                 'filename' => $filename,
@@ -191,14 +198,14 @@ class MasterPD101Controller extends AbstractController
     }
 
     #[Route('/export/rpt1', methods: ['GET'])]
-    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Tag(name: 'Report/MasterPD301')]
     #[OA\Response(
         response: 200,
         description: 'Successful response'
     )]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function jsonPD101(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
+    public function jsonPD301(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
     {
         try {
             $user = $this->getUser();
@@ -274,11 +281,18 @@ class MasterPD101Controller extends AbstractController
                     'refWardTransitionTypeCode' => 'A',
                     'wardDateTime' => sprintf('%s %s:00', $d['ADMISSION_DATE'], $d['ADMISSION_TIME']),
                     'wardCode' => (string)$d['WARD_NO'],
-                    'refDisciplineCode' => $this->reportService->refDisciplineCode($d),
-                    'refSpecialityCode' => $this->reportService->refDisciplineCode($d),
-                    'refSubSpecialityCode' => $this->reportService->refDisciplineCode($d),
+                    'refDisciplineCode' => $this->reportService->refDisciplineCode1($d),
+                    'refSpecialityCode' => $this->reportService->refDisciplineCode1($d),
+                    'refSubSpecialityCode' => $this->reportService->refDisciplineCode1($d),
                     'refWardClassCode' => $this->reportService->refWardClassCode($d),
                     'refWardCategoryCode' => '00',
+                    'refDischargeTypeCode' => $this->reportService->refDischargeTypeCode($d),
+                    'dischargeDateTime' => sprintf('%s %s:00', $d['DISCHARGE_DATE'], $d['DISCHARGE_TIME']),
+                    'refDischargeOfficerTypeCode' => '02',
+                    'mmc' => '00',
+                    'refDiagnosisItemTypeCode' => $this->reportService->refDiagnosisItemTypeCode($d),
+                    'description' => (string)$d['ICD10_DESCRIPTION'],
+                    'refIcd10Main' => (string)$d['ICD10_CODE'],
                     'person' => $person,
                     'nextOfKins' => $nok,
                 ];
@@ -287,7 +301,7 @@ class MasterPD101Controller extends AbstractController
             }
 
             $facilityCode = $_ENV['FACILITY_CODE'];
-            $filename = "{$facilityCode}_{$ds1}_{$ds2}_PD101.json";
+            $filename = "{$facilityCode}_{$ds1}_{$ds2}_PD301.json";
 
             $res = $this->json([
                 'filename' => $filename,
@@ -312,9 +326,9 @@ class MasterPD101Controller extends AbstractController
             $this->handleError($e);
         }
     }
-    
+
     #[Route('/rpt1', methods: ['GET'])]
-    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Tag(name: 'Report/MasterPD301')]
     #[OA\Response(
         response: 200,
         description: 'Successful response'
@@ -375,7 +389,7 @@ class MasterPD101Controller extends AbstractController
     }
 
     #[Route('/rpt1/{id}', methods: ['GET'])]
-    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Tag(name: 'Report/MasterPD301')]
     #[OA\Response(
         response: 200,
         description: 'Successful response'
@@ -409,7 +423,7 @@ class MasterPD101Controller extends AbstractController
 
     #[Route('/rpt1/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(type: 'object'))]
-    #[OA\Tag(name: 'Report/MasterPD101')]
+    #[OA\Tag(name: 'Report/MasterPD301')]
     #[OA\Response(
         response: 200,
         description: 'Successful response'

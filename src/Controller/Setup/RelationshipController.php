@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class RelationshipController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class RelationshipController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/relationships', methods: ['GET'])]
+    #[Route('/lookup/relationships', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationships', methods: ['GET'])]
+    #[Route('/relationships', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationships', methods: ['POST'])]
+    #[Route('/relationships', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationship', methods: ['POST'])]
+    #[Route('/relationship', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationship/{id}', methods: ['GET'])]
+    #[Route('/relationship/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationship/{id}', methods: ['PUT'])]
+    #[Route('/relationship/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class RelationshipController extends AbstractController
         }
     }
 
-    #[Route('/api/relationship/{id}', methods: ['DELETE'])]
+    #[Route('/relationship/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Relationship')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

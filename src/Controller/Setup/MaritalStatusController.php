@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class MaritalStatusController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class MaritalStatusController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/marital-statuses', methods: ['GET'])]
+    #[Route('/lookup/marital-statuses', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-statuses', methods: ['GET'])]
+    #[Route('/marital-statuses', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-statuses', methods: ['POST'])]
+    #[Route('/marital-statuses', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-status', methods: ['POST'])]
+    #[Route('/marital-status', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-status/{id}', methods: ['GET'])]
+    #[Route('/marital-status/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-status/{id}', methods: ['PUT'])]
+    #[Route('/marital-status/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class MaritalStatusController extends AbstractController
         }
     }
 
-    #[Route('/api/marital-status/{id}', methods: ['DELETE'])]
+    #[Route('/marital-status/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/MaritalStatus')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

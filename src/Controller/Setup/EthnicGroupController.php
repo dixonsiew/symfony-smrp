@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class EthnicGroupController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class EthnicGroupController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/ethnic-groups', methods: ['GET'])]
+    #[Route('/lookup/ethnic-groups', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-groups', methods: ['GET'])]
+    #[Route('/ethnic-groups', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-groups', methods: ['POST'])]
+    #[Route('/ethnic-groups', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-group', methods: ['POST'])]
+    #[Route('/ethnic-group', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-group/{id}', methods: ['GET'])]
+    #[Route('/ethnic-group/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-group/{id}', methods: ['PUT'])]
+    #[Route('/ethnic-group/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class EthnicGroupController extends AbstractController
         }
     }
 
-    #[Route('/api/ethnic-group/{id}', methods: ['DELETE'])]
+    #[Route('/ethnic-group/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/EthnicGroup')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

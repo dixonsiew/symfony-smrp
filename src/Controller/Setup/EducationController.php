@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class EducationController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class EducationController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/educations', methods: ['GET'])]
+    #[Route('/lookup/educations', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Education')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/educations', methods: ['GET'])]
+    #[Route('/educations', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Education')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/educations', methods: ['POST'])]
+    #[Route('/educations', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Education')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/education', methods: ['POST'])]
+    #[Route('/education', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Education')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/education/{id}', methods: ['GET'])]
+    #[Route('/education/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Education')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/education/{id}', methods: ['PUT'])]
+    #[Route('/education/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Education')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class EducationController extends AbstractController
         }
     }
 
-    #[Route('/api/education/{id}', methods: ['DELETE'])]
+    #[Route('/education/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Education')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

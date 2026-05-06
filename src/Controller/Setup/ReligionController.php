@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class ReligionController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class ReligionController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/religions', methods: ['GET'])]
+    #[Route('/lookup/religions', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religions', methods: ['GET'])]
+    #[Route('/religions', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religions', methods: ['POST'])]
+    #[Route('/religions', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Religion')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion', methods: ['POST'])]
+    #[Route('/religion', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['GET'])]
+    #[Route('/religion/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['PUT'])]
+    #[Route('/religion/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class ReligionController extends AbstractController
         }
     }
 
-    #[Route('/api/religion/{id}', methods: ['DELETE'])]
+    #[Route('/religion/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Religion')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

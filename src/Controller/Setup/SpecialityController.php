@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class SpecialityController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class SpecialityController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/specialities', methods: ['GET'])]
+    #[Route('/lookup/specialities', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/specialities', methods: ['GET'])]
+    #[Route('/specialities', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/specialities', methods: ['POST'])]
+    #[Route('/specialities', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/speciality', methods: ['POST'])]
+    #[Route('/speciality', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/speciality/{id}', methods: ['GET'])]
+    #[Route('/speciality/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/speciality/{id}', methods: ['PUT'])]
+    #[Route('/speciality/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class SpecialityController extends AbstractController
         }
     }
 
-    #[Route('/api/speciality/{id}', methods: ['DELETE'])]
+    #[Route('/speciality/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Speciality')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

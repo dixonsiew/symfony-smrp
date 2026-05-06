@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class GenderController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class GenderController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/genders', methods: ['GET'])]
+    #[Route('/lookup/genders', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Gender')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/genders', methods: ['GET'])]
+    #[Route('/genders', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Gender')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/genders', methods: ['POST'])]
+    #[Route('/genders', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Gender')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/gender', methods: ['POST'])]
+    #[Route('/gender', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Gender')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/gender/{id}', methods: ['GET'])]
+    #[Route('/gender/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Gender')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/gender/{id}', methods: ['PUT'])]
+    #[Route('/gender/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Gender')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class GenderController extends AbstractController
         }
     }
 
-    #[Route('/api/gender/{id}', methods: ['DELETE'])]
+    #[Route('/gender/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Gender')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

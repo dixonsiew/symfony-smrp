@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class CityController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class CityController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/cities', methods: ['GET'])]
+    #[Route('/lookup/cities', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/cities', methods: ['GET'])]
+    #[Route('/cities', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/cities', methods: ['POST'])]
+    #[Route('/cities', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/City')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city', methods: ['POST'])]
+    #[Route('/city', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['GET'])]
+    #[Route('/city/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['PUT'])]
+    #[Route('/city/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class CityController extends AbstractController
         }
     }
 
-    #[Route('/api/city/{id}', methods: ['DELETE'])]
+    #[Route('/city/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/City')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

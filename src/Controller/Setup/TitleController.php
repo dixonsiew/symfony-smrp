@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class TitleController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class TitleController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/titles', methods: ['GET'])]
+    #[Route('/lookup/titles', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Title')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/titles', methods: ['GET'])]
+    #[Route('/titles', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Title')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/titles', methods: ['POST'])]
+    #[Route('/titles', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Title')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/title', methods: ['POST'])]
+    #[Route('/title', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Title')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/title/{id}', methods: ['GET'])]
+    #[Route('/title/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Title')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/title/{id}', methods: ['PUT'])]
+    #[Route('/title/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Title')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class TitleController extends AbstractController
         }
     }
 
-    #[Route('/api/title/{id}', methods: ['DELETE'])]
+    #[Route('/title/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Title')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

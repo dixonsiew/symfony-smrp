@@ -30,6 +30,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class CountryController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +60,7 @@ class CountryController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/countries', methods: ['GET'])]
+    #[Route('/lookup/countries', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Country')]
     #[OA\Response(
         response: 200,
@@ -81,7 +82,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/countries', methods: ['GET'])]
+    #[Route('/countries', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Country')]
     #[OA\Response(
         response: 200,
@@ -114,7 +115,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/countries', methods: ['POST'])]
+    #[Route('/countries', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Country')]
     #[OA\Response(
@@ -154,7 +155,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country', methods: ['POST'])]
+    #[Route('/country', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Country')]
     #[Security(name: 'Bearer')]
@@ -182,7 +183,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['GET'])]
+    #[Route('/country/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Country')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +201,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['PUT'])]
+    #[Route('/country/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Country')]
     #[Security(name: 'Bearer')]
@@ -232,7 +233,7 @@ class CountryController extends AbstractController
         }
     }
 
-    #[Route('/api/country/{id}', methods: ['DELETE'])]
+    #[Route('/country/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Country')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

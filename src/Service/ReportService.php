@@ -139,7 +139,7 @@ class ReportService
         return $this->getCode('DIAGNOSIS_DESC', $doc, 'diag_item_type');
     }
 
-    public function refLabourModeCode(DocuBSONDocumentment $doc): string
+    public function refLabourModeCode(BSONDocument $doc): string
     {
         return $this->getCode('DELIVERY_TYPE', $doc, 'delivery_type');
     }

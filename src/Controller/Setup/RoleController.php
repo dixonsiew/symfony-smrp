@@ -11,7 +11,6 @@ use App\Service\RoleService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,6 +25,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class RoleController extends AbstractController
 {
     private RoleService $roleService;
@@ -50,7 +50,7 @@ class RoleController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/groups', methods: ['GET'])]
+    #[Route('/lookup/groups', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Role')]
     #[OA\Response(
         response: 200,

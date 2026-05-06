@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class IdTypeController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class IdTypeController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/id-types', methods: ['GET'])]
+    #[Route('/lookup/id-types', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/IdType')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-types', methods: ['GET'])]
+    #[Route('/id-types', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/IdType')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-types', methods: ['POST'])]
+    #[Route('/id-types', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/IdType')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-type', methods: ['POST'])]
+    #[Route('/id-type', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/IdType')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-type/{id}', methods: ['GET'])]
+    #[Route('/id-type/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/IdType')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-type/{id}', methods: ['PUT'])]
+    #[Route('/id-type/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/IdType')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class IdTypeController extends AbstractController
         }
     }
 
-    #[Route('/api/id-type/{id}', methods: ['DELETE'])]
+    #[Route('/id-type/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/IdType')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

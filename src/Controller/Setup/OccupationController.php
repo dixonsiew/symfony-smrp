@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class OccupationController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class OccupationController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/occupations', methods: ['GET'])]
+    #[Route('/lookup/occupations', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupations', methods: ['GET'])]
+    #[Route('/occupations', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupations', methods: ['POST'])]
+    #[Route('/occupations', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupation', methods: ['POST'])]
+    #[Route('/occupation', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupation/{id}', methods: ['GET'])]
+    #[Route('/occupation/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupation/{id}', methods: ['PUT'])]
+    #[Route('/occupation/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class OccupationController extends AbstractController
         }
     }
 
-    #[Route('/api/occupation/{id}', methods: ['DELETE'])]
+    #[Route('/occupation/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/Occupation')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

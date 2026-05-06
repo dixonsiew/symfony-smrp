@@ -15,7 +15,6 @@ use App\Service\UserService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,6 +29,7 @@ use OpenApi\Attributes as OA;
 
 use function strlen;
 
+#[Route('/api')]
 class PersonCategoryCodeController extends AbstractController
 {
     private CommonSetupService $commonSetupService;
@@ -59,7 +59,7 @@ class PersonCategoryCodeController extends AbstractController
         throw $e;
     }
 
-    #[Route('/api/lookup/person-category-codes', methods: ['GET'])]
+    #[Route('/lookup/person-category-codes', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[OA\Response(
         response: 200,
@@ -81,7 +81,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-codes', methods: ['GET'])]
+    #[Route('/person-category-codes', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[OA\Response(
         response: 200,
@@ -114,7 +114,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-codes', methods: ['POST'])]
+    #[Route('/person-category-codes', methods: ['POST'])]
     #[OA\RequestBody(required: false, content: new OA\JsonContent(ref: '#/components/schemas/KeywordDto'))]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[OA\Response(
@@ -154,7 +154,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-code', methods: ['POST'])]
+    #[Route('/person-category-code', methods: ['POST'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[Security(name: 'Bearer')]
@@ -182,7 +182,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-code/{id}', methods: ['GET'])]
+    #[Route('/person-category-code/{id}', methods: ['GET'])]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -200,7 +200,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-code/{id}', methods: ['PUT'])]
+    #[Route('/person-category-code/{id}', methods: ['PUT'])]
     #[OA\RequestBody(required: true, content: new OA\JsonContent(ref: '#/components/schemas/CommonSetupDto'))]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[Security(name: 'Bearer')]
@@ -232,7 +232,7 @@ class PersonCategoryCodeController extends AbstractController
         }
     }
 
-    #[Route('/api/person-category-code/{id}', methods: ['DELETE'])]
+    #[Route('/person-category-code/{id}', methods: ['DELETE'])]
     #[OA\Tag(name: 'Setup/PersonCategoryCode')]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

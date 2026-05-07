@@ -18,8 +18,9 @@ use MongoDB\BSON\ObjectId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -82,7 +83,7 @@ class MasterPD105Controller extends AbstractController
     )]
     #[Security(name: 'Bearer')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function jsonPD105(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): JsonResponse
+    public function jsonPD105(#[MapQueryParameter] string $datefrom = '', #[MapQueryParameter] string $dateto = ''): StreamedJsonResponse
     {
         try {
             $user = $this->getUser();
@@ -179,26 +180,77 @@ class MasterPD105Controller extends AbstractController
             $facilityCode = $_ENV['FACILITY_CODE'];
             $filename = "{$facilityCode}_{$ds1}_{$ds2}_PD105.json";
 
-            $res = $this->json([
-                'filename' => $filename,
-                'admissionFrom' => $datefrom,
-                'admissionTo' => $dateto,
-                'refServiceTypeCode' => '01',
-                'facilityCode' => $facilityCode,
-                'forms' => $forms,
-            ]);
-
-            $res->headers->set('Content-Type', 'application/json');
-            $res->headers->set('Content-Disposition', "attachment; filename=$filename");
-            $res->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
-            $res->headers->set('Pragma', 'no-cache');
-            $res->headers->set('Expires', '0');
-            $res->headers->set('filename', $filename);
-
-            $res->setEncodingOptions($res->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
+            $res = new StreamedJsonResponse(
+                [
+                    'filename' => $filename,
+                    'admissionFrom' => $datefrom,
+                    'admissionTo' => $dateto,
+                    'refServiceTypeCode' => '01',
+                    'facilityCode' => $facilityCode,
+                    'forms' => $forms,
+                ], 200,
+                [
+                    'Content-Type' => 'application/json',
+                    'Content-Disposition' => "attachment; filename=$filename",
+                    'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                    'Pragma' => 'no-cache',
+                    'Expires' => '0',
+                    'filename' => $filename,
+                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
             return $res;
         } catch (\Exception $e) {
+            $this->handleError($e);
+        }
+    }
+
+    #[Route('/export/rpt1/xlsx', methods: ['GET'])]
+    #[OA\Tag(name: 'Report/MasterPD105')]
+    #[OA\Response(
+        response: 200,
+        description: 'Successful response'
+    )]
+    #[Security(name: 'Bearer')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function xlsx(
+        #[MapQueryParameter] string $vt = '0',
+        #[MapQueryParameter] string $datefrom = '',
+        #[MapQueryParameter] string $dateto = ''
+    ): StreamedResponse
+    {
+        try {
+            $user = $this->getUser();
+            if ($user === null) {
+                throw new UnauthorizedHttpException('User not found', code: 401);
+            }
+
+            $username = $user->getUserIdentifier();
+            $cli = $this->mongoDbService->getClient();
+            $col = $this->getCollection($cli, $username, $vt);
+            $ls = $col->find([])->toArray();
+            $ls = $this->helperService->processDoc($ls);
+
+            $dt1 = explode('-', $datefrom);
+            $dt2 = explode('-', $dateto);
+            $ds1 = "{$dt1[2]}{$dt1[1]}{$dt1[0]}";
+            $ds2 = "{$dt2[2]}{$dt2[1]}{$dt2[0]}";
+
+            $x = 'PD105';
+            $facilityCode = $_ENV['FACILITY_CODE'];
+            $filename = "{$facilityCode}_{$ds1}_{$ds2}_{$x}.xlsx";
+
+            return new StreamedResponse(function () use ($ls, $filename) {
+                $this->helperService->getXlsx($filename, COLUMN_MAP, $ls);
+            }, 200, [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition' => "attachment; filename=$filename",
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+                'filename' => $filename,
+            ]);
+        } catch (\Exception $e) {
+            print_r($e->getTrace());
             $this->handleError($e);
         }
     }
@@ -216,7 +268,7 @@ class MasterPD105Controller extends AbstractController
         #[MapQueryParameter] string $vt = '0',
         #[MapQueryParameter] string $datefrom = '',
         #[MapQueryParameter] string $dateto = ''
-    ): JsonResponse
+    ): StreamedJsonResponse
     {
         try {
             $user = $this->getUser();
@@ -250,15 +302,21 @@ class MasterPD105Controller extends AbstractController
             ];
             $ls = $col->find($filter, $options)->toArray();
             $ls = $this->helperService->processDoc($ls);
-            return $this->json([
-                'columnmaps' => COLUMN_MAP,
-                'total_count' => $total,
-                'total_page' => $pg->getTotalPages(),
-                'page' => $pg->pageNum,
-                'data' => $ls,
-                'datefrom' => $dateFrom,
-                'dateto' => $dateTo,
-            ]);
+            return new StreamedJsonResponse(
+                [
+                    'columnmaps' => COLUMN_MAP,
+                    'total_count' => $total,
+                    'total_page' => $pg->getTotalPages(),
+                    'page' => $pg->pageNum,
+                    'data' => $ls,
+                    'datefrom' => $dateFrom,
+                    'dateto' => $dateTo,
+                ], 200,
+                [
+                    'Content-Type' => 'application/json',
+                ],
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
         } catch (\Exception $e) {
             $this->handleError($e);
         }
@@ -288,7 +346,9 @@ class MasterPD105Controller extends AbstractController
 
             if (!empty($ls)) {
                 $o = $ls[0];
-                return $this->json($o);
+                $res = $this->json($o);
+                $res->setEncodingOptions($res->getEncodingOptions() | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                return $res;
             }
 
             throw new NotFoundHttpException('Record not found', code: 404);

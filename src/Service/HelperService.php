@@ -7,6 +7,12 @@ use function strlen;
 use DateTime;
 use MongoDB\Model\BSONDocument;
 
+use OpenSpout\Writer\XLSX\Options;
+use OpenSpout\Writer\XLSX\Writer;
+use OpenSpout\Common\Entity\Cell;
+use OpenSpout\Common\Entity\Row;
+use OpenSpout\Common\Entity\Style\Style;
+
 class HelperService
 {
     public function getSort(string $sort, string $_sortby, string $_sortdir): array
@@ -59,6 +65,43 @@ class HelperService
     {
         $r = preg_replace('/[^\d.]/', '', $s);
         return (float)$r;
+    }
+
+    public function getXlsx(string $filename, array $colmaps, array $ls): void
+    {
+        $coloffset = 12;
+        $opt = new Options();
+        $boldStyle = new Style(fontBold: true, fontName: 'Calibri');
+
+        for ($i = 0; $i < count($colmaps); $i++) {
+            $t = $colmaps[$i];
+            $n = strlen($t->text);
+            $opt->setColumnWidth($n + $coloffset, $i + 1);
+        }
+
+        $wr = new Writer($opt);
+        $wr->openToBrowser($filename);
+
+        $hd = [];
+        for ($i = 0; $i < count($colmaps); $i++) {
+            $t = $colmaps[$i];
+            $hd[] = Cell::fromValue($t->text, $boldStyle);
+        }
+        $wr->addRow(new Row($hd));
+
+        for ($i = 0; $i < count($ls); $i++) {
+            $cx = [];
+            $x = $ls[$i];
+            for ($j = 0; $j < count($colmaps); $j++) {
+                $t = $colmaps[$j];
+                $field = $t->field;
+                $s = isset($x[$field]) ? (string)$x[$field] : '';
+                $cx[] = Cell::fromValue($s);
+            }
+            $wr->addRow(new Row($cx));
+        }
+
+        $wr->close();
     }
 
     public function processDoc(array $lx): array

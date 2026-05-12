@@ -1,1 +1,1 @@
-symfony serve
+symfony serve --allow-all-ip --no-tls"
